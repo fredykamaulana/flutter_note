@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_note/db_helper.dart';
+import 'package:flutter_note/firestore_helper.dart';
 import 'package:flutter_note/models/note_model.dart';
 import 'package:flutter_note/pages/note_editor_page.dart';
 
@@ -11,7 +11,8 @@ class NoteHomePage extends StatefulWidget {
 }
 
 class _NoteListPageState extends State<NoteHomePage> {
-  final DbHelper dbHelper = DbHelper.instance;
+  //final DbHelper dbHelper = DbHelper.instance;
+  final FirestoreHelper fsHelper = FirestoreHelper();
 
   List<NoteModel> _notes = [];
 
@@ -24,7 +25,7 @@ class _NoteListPageState extends State<NoteHomePage> {
   Future<void> _loadNotes() async {
     // TODO: Load notes from database
     // Simulating database with sample data
-    final noteList = await dbHelper.fetchNotes();
+    final noteList = await fsHelper.fetchNotes();
 
     setState(() {
       _notes = noteList;

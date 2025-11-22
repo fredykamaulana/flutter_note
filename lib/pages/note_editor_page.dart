@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_note/db_helper.dart';
+import 'package:flutter_note/firestore_helper.dart';
 import 'package:flutter_note/models/note_model.dart';
 
 class NoteEditorPage extends StatefulWidget {
@@ -10,7 +10,8 @@ class NoteEditorPage extends StatefulWidget {
 }
 
 class _NoteEditorPageState extends State<NoteEditorPage> {
-  final DbHelper dbHelper = DbHelper.instance;
+  //final DbHelper dbHelper = DbHelper.instance;
+  final FirestoreHelper fsHelper = FirestoreHelper();
 
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
@@ -29,7 +30,7 @@ class _NoteEditorPageState extends State<NoteEditorPage> {
       final title = _titleController.text;
       final content = _contentController.text;
 
-      final result = dbHelper.insertItem(
+      final result = fsHelper.addNote(
         NoteModel(
           noteId: null,
           title: title,
@@ -46,14 +47,12 @@ class _NoteEditorPageState extends State<NoteEditorPage> {
       );
 
       // Show success message
-      if (await result > 0) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Note saved successfully!'),
-            backgroundColor: Colors.green,
-          ),
-        );
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Note saved successfully!'),
+          backgroundColor: Colors.green,
+        ),
+      );
 
       // Navigate back
       Navigator.pop(context, result);
