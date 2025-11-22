@@ -42,7 +42,7 @@ class _NoteListPageState extends State<NoteHomePage> {
 
     // Reload notes after returning from create page
     if (result != null) {
-      _loadNotes();
+      //_loadNotes();
     }
   }
 
@@ -61,7 +61,7 @@ class _NoteListPageState extends State<NoteHomePage> {
     // }
   }
 
-  void _deleteNote(int noteId) {
+  void _deleteNote(String noteId) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -74,10 +74,11 @@ class _NoteListPageState extends State<NoteHomePage> {
           ),
           TextButton(
             onPressed: () {
-              //TODO: Delete from database
               setState(() {
                 fsHelper.deleteNote(noteId.toString());
               });
+              //_loadNotes();
+
               Navigator.pop(context);
               ScaffoldMessenger.of(
                 context,
@@ -109,7 +110,7 @@ class _NoteListPageState extends State<NoteHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('My Notes'), elevation: 0),
-      body: _notes.isEmpty ? _buildEmptyState() : _buildNoteList(),
+      body: _notes.isEmpty ? _buildEmptyState() : _buildStreamNoteList(),
       floatingActionButton: FloatingActionButton(
         onPressed: _navigateToCreateNote,
         tooltip: 'Create new note',
@@ -189,7 +190,7 @@ class _NoteListPageState extends State<NoteHomePage> {
   }
 
   Widget _buildStreamNoteList() {
-    return StreamBuilder<QuerySnapshot>(
+    return StreamBuilder<QuerySnapshot<NoteModel>>(
       stream: fsHelper.getNoteStream(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -204,7 +205,7 @@ class _NoteListPageState extends State<NoteHomePage> {
             padding: const EdgeInsets.all(8.0),
             itemCount: notes.length,
             itemBuilder: (context, index) {
-              final note = notes[index].data() as NoteModel;
+              final note = notes.elementAt(index).data();
               return Card(
                 margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 shape: RoundedRectangleBorder(

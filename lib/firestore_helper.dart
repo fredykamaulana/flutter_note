@@ -21,7 +21,9 @@ class FirestoreHelper {
   }
 
   Future<List<NoteModel>> fetchNotes() async {
-    final querySnapshot = await noteRef.get();
+    final querySnapshot = await noteRef
+        .orderBy('created_at', descending: true)
+        .get();
     return querySnapshot.docs.map((doc) => doc.data()).toList();
   }
 
@@ -38,7 +40,7 @@ class FirestoreHelper {
     await docRef.delete();
   }
 
-  Stream<QuerySnapshot> getNoteStream() {
+  Stream<QuerySnapshot<NoteModel>> getNoteStream() {
     return noteRef.snapshots();
   }
 }
