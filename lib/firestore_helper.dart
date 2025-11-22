@@ -17,4 +17,17 @@ class FirestoreHelper {
     final querySnapshot = await noteRef.get();
     return querySnapshot.docs.map((doc) => doc.data()).toList();
   }
+
+  Future<void> updateNote(NoteModel note) async {
+    if (note.noteId == null) {
+      throw ArgumentError('Note ID cannot be null for update operation.');
+    }
+    final docRef = noteRef.doc(note.noteId);
+    await docRef.set(note);
+  }
+
+  Future<void> deleteNote(String noteId) async {
+    final docRef = noteRef.doc(noteId);
+    await docRef.delete();
+  }
 }
