@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_note/firestore_helper.dart';
 import 'package:flutter_note/models/note_model.dart';
 import 'package:flutter_note/pages/note_editor_page.dart';
+import 'package:flutter_note/pages/note_update_page.dart';
 
 class NoteHomePage extends StatefulWidget {
   const NoteHomePage({super.key});
@@ -47,15 +48,13 @@ class _NoteListPageState extends State<NoteHomePage> {
   }
 
   void _navigateToEditNote(NoteModel note) async {
-    // Navigate to edit note page
-    // final result = await Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) => NoteEditorPage(note: note),
-    //   ),
-    // );
+    //Navigate to edit note page
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => NoteUpdatePage(note: note)),
+    );
 
-    // Reload notes after returning from edit page
+    // //Reload notes after returning from edit page
     // if (result != null) {
     //   _loadNotes();
     // }
