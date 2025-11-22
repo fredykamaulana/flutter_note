@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_note/firestore_helper.dart';
 import 'package:flutter_note/models/note_model.dart';
@@ -73,10 +74,10 @@ class _NoteListPageState extends State<NoteHomePage> {
           ),
           TextButton(
             onPressed: () {
-              // TODO: Delete from database
-              // setState(() {
-              //   //_notes.removeWhere((note) => note.id == noteId);
-              // });
+              //TODO: Delete from database
+              setState(() {
+                fsHelper.deleteNote(noteId.toString());
+              });
               Navigator.pop(context);
               ScaffoldMessenger.of(
                 context,
@@ -183,6 +184,68 @@ class _NoteListPageState extends State<NoteHomePage> {
             onTap: () => _navigateToEditNote(note),
           ),
         );
+      },
+    );
+  }
+
+  Widget _buildStreamNoteList() {
+    return StreamBuilder<QuerySnapshot>(
+      stream: fsHelper.getNoteStream(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return _buildEmptyState();
+        } else {
+          final notes = snapshot.data!.docs;
+          return ListView.builder(
+            padding: const EdgeInsets.all(8.0),
+            itemCount: notes.length,
+            itemBuilder: (context, index) {
+              final note = notes[index].data() as NoteModel;
+              return Card(
+                margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: ListTile(
+                  contentPadding: const EdgeInsets.all(16),
+                  title: Text(
+                    note.title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 8),
+                      Text(
+                        note.content,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        _formatDate(DateTime.parse(note.createdAt)),
+                        style: TextStyle(fontSize: 12, color: Colors.grey[500]),
+                      ),
+                    ],
+                  ),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete_outline, color: Colors.red),
+                    onPressed: () => _deleteNote(note.noteId),
+                  ),
+                  onTap: () => _navigateToEditNote(note),
+                ),
+              );
+            },
+          );
+        }
       },
     );
   }
