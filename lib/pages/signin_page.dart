@@ -93,7 +93,7 @@ class _SigninPageState extends State<SigninPage> {
                 SizedBox.square(dimension: 16),
                 ElevatedButton(
                   onPressed: () async {
-                    _signInWithGoogle();
+                    // _signInWithGoogle();
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -149,24 +149,24 @@ class _SigninPageState extends State<SigninPage> {
     psswdController.clear();
   }
 
-  Future _signInWithGoogle() async {
-    try {
-      final result = await authHelper.signInWithGoogle();
+  // Future _signInWithGoogle() async {
+  //   try {
+  //     final result = await authHelper.signInWithGoogle();
 
-      if (result != null) {
-        if (mounted) {
-          _showSnackbar('Signin success as ${result.user?.email}');
-          //Navigator.pushNamed(context, NavigationRoutes.movieList.name);
-        }
-      }
-    } on FirebaseAuthException catch (e) {
-      _showSnackbar('Signin fail: ${e.message}');
-    } on GoogleSignInException catch (e) {
-      _showSnackbar('Signin fail: ${e.description}');
-    } catch (e) {
-      _showSnackbar('Signin fail: $e');
-    }
-  }
+  //     if (result != null) {
+  //       if (mounted) {
+  //         _showSnackbar('Signin success as ${result.user?.email}');
+  //         //Navigator.pushNamed(context, NavigationRoutes.movieList.name);
+  //       }
+  //     }
+  //   } on FirebaseAuthException catch (e) {
+  //     _showSnackbar('Signin fail: ${e.message}');
+  //   } on GoogleSignInException catch (e) {
+  //     _showSnackbar('Signin fail: ${e.description}');
+  //   } catch (e) {
+  //     _showSnackbar('Signin fail: $e');
+  //   }
+  // }
 
   _showSnackbar(String message) {
     if (mounted) {

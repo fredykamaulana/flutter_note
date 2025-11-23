@@ -200,6 +200,11 @@ class _NoteListPageState extends State<NoteHomePage> {
           return _buildEmptyState();
         } else {
           final notes = snapshot.data!.docs;
+          // .sort((a, b) {
+          //   final aDate = DateTime.parse(a.data().createdAt);
+          //   final bDate = DateTime.parse(b.data().createdAt);
+          //   return bDate.compareTo(aDate);
+          // });
           return ListView.builder(
             padding: const EdgeInsets.all(8.0),
             itemCount: notes.length,
