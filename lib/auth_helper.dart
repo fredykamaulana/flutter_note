@@ -7,11 +7,11 @@ class AuthHelper {
   // Add your authentication helper methods here
   final firebaseAuth = FirebaseAuth.instance;
 
-  // final GoogleSignIn googleSignIn = GoogleSignIn.instance;
-  // final clientId =
-  //     '179049673161-pu3etga7krf3vd8dctf0g0ghp15j38un.apps.googleusercontent.com';
-  // final serverClientId =
-  //     '179049673161-v1n7npj19qqvt7eanj09pa8p4tpfrajm.apps.googleusercontent.com';
+  final GoogleSignIn googleSignIn = GoogleSignIn.instance;
+  final clientId =
+      '44767048258-j9h430s8u3cvit0k6adf7j7f7n7s737t.apps.googleusercontent.com';
+  final serverClientId =
+      '44767048258-b12irtp0pmcpsv9g4osicnah38fhvk23.apps.googleusercontent.com';
 
   Future<UserCredential> signUpWithEmailAndPassword(
     String email,
@@ -31,28 +31,28 @@ class AuthHelper {
     return userCredential;
   }
 
-  // Future<UserCredential?> signInWithGoogle() async {
-  //   // Trigger the authentication flow
-  //   unawaited(
-  //     googleSignIn.initialize(
-  //       clientId: clientId,
-  //       serverClientId: serverClientId,
-  //     ),
-  //   );
+  Future<UserCredential?> signInWithGoogle() async {
+    // Trigger the authentication flow
+    unawaited(
+      googleSignIn.initialize(
+        clientId: clientId,
+        serverClientId: serverClientId,
+      ),
+    );
 
-  //   final GoogleSignInAccount googleUser = await googleSignIn.authenticate();
+    final GoogleSignInAccount googleUser = await googleSignIn.authenticate();
 
-  //   // Obtain the auth details from the request
-  //   final GoogleSignInAuthentication googleAuth = googleUser.authentication;
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth = googleUser.authentication;
 
-  //   // Create a new credential
-  //   final OAuthCredential credential = GoogleAuthProvider.credential(
-  //     idToken: googleAuth.idToken,
-  //   );
+    // Create a new credential
+    final OAuthCredential credential = GoogleAuthProvider.credential(
+      idToken: googleAuth.idToken,
+    );
 
-  //   // Once signed in, return the UserCredential
-  //   return await firebaseAuth.signInWithCredential(credential);
-  // }
+    // Once signed in, return the UserCredential
+    return await firebaseAuth.signInWithCredential(credential);
+  }
 
   Stream<User?> checkUserSignInState() {
     final state = firebaseAuth.authStateChanges();
@@ -60,7 +60,7 @@ class AuthHelper {
   }
 
   signOutWithGoogle() {
-    //googleSignIn.signOut();
+    googleSignIn.signOut();
     firebaseAuth.signOut();
   }
 }
