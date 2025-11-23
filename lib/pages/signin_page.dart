@@ -141,7 +141,7 @@ class _SigninPageState extends State<SigninPage> {
 
       if (mounted) {
         _showSnackbar('Signin success as ${result.user?.email}');
-        //Navigator.pushNamed(context, NavigationRoutes.movieList.name);
+        Navigator.pushNamed(context, '/home');
       }
     } on FirebaseAuthException catch (e) {
       _showSnackbar('Signin fail: ${e.message}');

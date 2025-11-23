@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_note/auth_helper.dart';
 import 'package:flutter_note/firestore_helper.dart';
 import 'package:flutter_note/models/note_model.dart';
 import 'package:flutter_note/pages/note_editor_page.dart';
@@ -15,6 +16,7 @@ class NoteHomePage extends StatefulWidget {
 class _NoteListPageState extends State<NoteHomePage> {
   //final DbHelper dbHelper = DbHelper.instance;
   final FirestoreHelper fsHelper = FirestoreHelper();
+  final authHelper = AuthHelper();
 
   List<NoteModel> _notes = [];
 
@@ -108,7 +110,16 @@ class _NoteListPageState extends State<NoteHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('My Notes'), elevation: 0),
+      appBar: AppBar(
+        title: const Text('My Notes'),
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: authHelper.signOut(),
+          ),
+        ],
+      ),
       body: _notes.isEmpty ? _buildEmptyState() : _buildStreamNoteList(),
       floatingActionButton: FloatingActionButton(
         onPressed: _navigateToCreateNote,

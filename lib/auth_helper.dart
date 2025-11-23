@@ -59,7 +59,7 @@ class AuthHelper {
     return state;
   }
 
-  signOutWithGoogle() {
+  signOut() {
     googleSignIn.signOut();
     firebaseAuth.signOut();
   }
