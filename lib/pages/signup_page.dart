@@ -123,7 +123,7 @@ class _SignupPageState extends State<SignupPage> {
         emailController.text,
         psswdController.text,
       );
-      _showSnackbar('Signup success ${result?.email}');
+      _showSnackbar('Signup success ${result.user?.email}');
 
       if (mounted) {
         Navigator.pop(context);

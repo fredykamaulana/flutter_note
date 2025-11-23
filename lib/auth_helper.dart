@@ -13,32 +13,22 @@ class AuthHelper {
   final serverClientId =
       '179049673161-v1n7npj19qqvt7eanj09pa8p4tpfrajm.apps.googleusercontent.com';
 
-  Future<User?> signUpWithEmailAndPassword(
+  Future<UserCredential> signUpWithEmailAndPassword(
     String email,
     String password,
   ) async {
-    try {
-      UserCredential userCredential = await firebaseAuth
-          .createUserWithEmailAndPassword(email: email, password: password);
-      return userCredential.user;
-    } catch (e) {
-      print('Error signing up: $e');
-      return null;
-    }
+    UserCredential userCredential = await firebaseAuth
+        .createUserWithEmailAndPassword(email: email, password: password);
+    return userCredential;
   }
 
-  Future<User?> signInWithEmailAndPassword(
+  Future<UserCredential> signInWithEmailAndPassword(
     String email,
     String password,
   ) async {
-    try {
-      UserCredential userCredential = await firebaseAuth
-          .signInWithEmailAndPassword(email: email, password: password);
-      return userCredential.user;
-    } catch (e) {
-      print('Error signing in: $e');
-      return null;
-    }
+    UserCredential userCredential = await firebaseAuth
+        .signInWithEmailAndPassword(email: email, password: password);
+    return userCredential;
   }
 
   Future<UserCredential?> signInWithGoogle() async {
